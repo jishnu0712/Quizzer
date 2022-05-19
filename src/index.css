@@ -55,5 +55,8 @@ body {
   height: max-content;
   border-radius: 8px;
   padding: 10px;
-  margin: 0 0  0 10px;
+  margin-right: 10px;
+}
+.selected {
+  background-color: #4D5B9E;
 }
