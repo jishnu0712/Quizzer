@@ -1,25 +1,22 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import "./components/LandingPage"
+import LandingPage from './components/LandingPage';
+import QuizPage from './components/QuizPage';
 
-function App() {
+
+export default function App() {
+  const [quizStarted, setQuizStarted] = React.useState(false);
+
+  function handleClick() {
+    setQuizStarted(prev => !prev);
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      { !quizStarted && <LandingPage
+        handleClick={handleClick}  />}
+        
+      { quizStarted && <QuizPage/>}
+    </>
   );
 }
-
-export default App;
