@@ -1,6 +1,8 @@
 import React from "react";
 import Quizz from "./Quizz";
 
+const URL = `https://opentdb.com/api.php?amount=5&type=multiple`;
+
 const baseResponse = {
     A: { clicked: false },
     B: { clicked: false },
@@ -8,22 +10,11 @@ const baseResponse = {
     D: { clicked: false },
 };
 
-// let results = [
-//     {
-//         "category": "Entertainment: Music",
-//         "type": "multiple",
-//         "difficulty": "medium",
-//         "question": "Which of the following guitarists recorded an album as a member of the Red Hot Chili Peppers?",
-//         "correct_answer": "Dave Navarro",
-//         "incorrect_answers": [
-//             "Tom Morello ",
-//             "Billy Corgan",
-//             "Ed O&#039;Brien"
-//         ]
-//     }]
+let FilledQuizz = [];
 
 export default function QuizPage() {
     const [options, setOptions] = React.useState(baseResponse);
+    const [questions, setQuestions] = React.useState([]);
 
     function handleClick(id) {
         setOptions(prev => {
@@ -33,14 +24,36 @@ export default function QuizPage() {
             };
         });
     }
-    let question = 'who built Taj?'
+    React.useEffect(() => {
+        fetch(URL)
+            .then((response) => response.json())
+            .then(data => {
+                if (data.response_code === 0) {
+                    return (data.results);
+                }
+                throw (new Error("err"))
+            })
+            .then(//save to state 
+                data => setQuestions(data)
+            )
+            .catch(err => console.log(err))
+    },[])
+    if (questions.length > 0) {
+         FilledQuizz = questions.map(ele => (<Quizz
+            question={ele.question}
+            handleClick={handleClick}
+            options={options}
+        />))
+    }
+
     return (
         <div className="quizz-page">
-            <Quizz
+            {/* <Quizz
                 question={question}
                 handleClick={handleClick}
                 options={options}
-            />
+            /> */}
+            {FilledQuizz}
         </div>
     );
 }

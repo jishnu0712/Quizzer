@@ -45,7 +45,8 @@ body {
 }
 /* Quizz-page */
 .quizz{
-  border-bottom: black;
+  border-bottom: 2px solid #DBDEF0;
+ 
 }
 
 /* quizz component */
@@ -56,6 +57,7 @@ body {
   border-radius: 8px;
   padding: 10px;
   margin-right: 10px;
+  margin-bottom: 10px;
 }
 .selected {
   background-color: #4D5B9E;
