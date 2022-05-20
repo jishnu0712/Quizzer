@@ -1,13 +1,14 @@
 import React from "react";
 
 export default function Quizz(props) {
+
     function clicked(id) {
         props.handleClick(id);
     }
 
     return (
         <div className="quizz">
-            <h2>Who built taj mahal?</h2>
+            <h2>{props.question}</h2>
 
             <button className={(props.options.A.clicked) ? "options selected" : "options"}
                 onClick={() => { clicked('A') }}>Option A</button>
