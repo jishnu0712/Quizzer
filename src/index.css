@@ -1,5 +1,5 @@
 body {
-  margin: 0 20%;
+  margin: 25px 20%;
   background-color: #F5F7FB;
   height: 100vh;
   display: flex;
@@ -44,9 +44,12 @@ body {
   cursor: pointer;
 }
 /* Quizz-page */
+.quizz-page{
+  text-align: center;
+ }
 .quizz{
   border-bottom: 2px solid #DBDEF0;
- 
+  text-align: justify;
 }
 
 /* quizz component */
@@ -58,4 +61,8 @@ body {
   padding: 10px;
   margin-right: 10px;
   margin-bottom: 10px;
+}
+
+.check-answers{
+  margin: 20px;
 }
