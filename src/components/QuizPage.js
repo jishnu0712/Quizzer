@@ -9,7 +9,7 @@ let FilledQuizz = [];
 export default function QuizPage() {
     const [userAnswers, setUserAnswers] = React.useState({});
     const [questions, setQuestions] = React.useState([]);
-
+console.log(userAnswers);
     function handleOptionClick(questionID, ans) {
         setUserAnswers(prev => (
             {
