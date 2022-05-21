@@ -7,23 +7,35 @@ const incorrectOption = { backgroundColor: '#F8BCBC' }
 
 export default function Quizz(props) {
     const questionID = props.id;
-    const selectedAnswer = props.userAnswers[questionID];
+    const [style, setStyle] = React.useState({});
 
-    function clicked(ans) {
-        props.handleClick(questionID, ans);
+    function handleClick(ans) {
+        setStyle(getColor(ans));
+        props.handleOptionClick(questionID, ans);
     }
+
     function getColor(ans) {
-        if (props.userAnswers.checkAnswer) {
-            if (ans === props.correct_answer) return correctOption
-            return incorrectOption
+        if (props.userAnswers.checkAnswer) { //check correct ans
+            if (questionID in props.userAnswers) {
+                if (ans === props.correct_answer) return correctOption;
+                return incorrectOption;
+            }
+            return {};
+        }//mark selection
+        else {
+            if(ans === props.userAnswers[questionID]){
+                return selectedOption;
+            }
+            else return {};
         }
-        return (ans === selectedAnswer) ? selectedOption : {}
     }
+
 
     const optionsArr = props.answers.map(ele => (
         <Options
             optionText={ele}
-            clicked={clicked}
+            handleClick={handleClick}
+            styles={style}
         />))
 
     return (

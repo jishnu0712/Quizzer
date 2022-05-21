@@ -10,7 +10,7 @@ export default function QuizPage() {
     const [userAnswers, setUserAnswers] = React.useState({});
     const [questions, setQuestions] = React.useState([]);
 
-    function handleClick(questionID, ans) {
+    function handleOptionClick(questionID, ans) {
         setUserAnswers(prev => (
             {
                 ...prev,
@@ -58,7 +58,7 @@ export default function QuizPage() {
             key={ele.id}
             id={ele.id}
             question={ele.question}
-            handleClick={handleClick}
+            handleOptionClick={handleOptionClick}
             userAnswers={userAnswers}
             correct_answer={ele.correct_answer}
             answers={[...ele.incorrect_answers, ele.correct_answer]}
