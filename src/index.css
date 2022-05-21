@@ -1,5 +1,5 @@
 body {
-  margin: 0;
+  margin: 0 20%;
   background-color: #F5F7FB;
   height: 100vh;
   display: flex;
@@ -58,8 +58,4 @@ body {
   padding: 10px;
   margin-right: 10px;
   margin-bottom: 10px;
-}
-.selected {
-  background-color: #D6DBF5;
-  
 }

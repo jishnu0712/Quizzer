@@ -1,8 +1,12 @@
 import React from "react";
 
-export default function Quizz(props) {
+const styles = {
+    backgroundColor: '#D6DBF5',
+}
 
-    function clicked(id) {
+export default function Quizz(props) {
+    function clicked(id,ans) {
+        console.log(ans);
         props.handleClick(id);
     }
 
@@ -10,17 +14,24 @@ export default function Quizz(props) {
         <div className="quizz">
             <h2>{props.question}</h2>
 
-            <button className={(props.options.A.clicked) ? "options selected" : "options"}
-                onClick={() => { clicked('A') }}>Option A</button>
+            <button className="options"
+                onClick={() => { clicked('A',props.answers[0]) }}
+                style={(props.options.A.clicked) ? styles : {}}>{props.answers[0]}</button>
 
-            <button className={(props.options.B.clicked) ? "options selected" : "options"}
-                onClick={() => { clicked('B') }}>Option B</button>
+            <button className="options"
+                onClick={() => { clicked('B',props.answers[1]) }}
+                style={(props.options.B.clicked) ? styles : {}}
+            >{props.answers[1]}</button>
 
-            <button className={(props.options.C.clicked) ? "options selected" : "options"}
-                onClick={() => { clicked('C') }}>Option C</button>
+            <button className="options"
+                onClick={() => { clicked('C',props.answers[2]) }}
+                style={(props.options.C.clicked) ? styles : {}}
+            >{props.answers[2]}</button>
 
-            <button className={(props.options.D.clicked) ? "options selected" : "options"}
-                onClick={() => { clicked('D') }}>Option D</button>
+            <button className="options"
+                onClick={() => { clicked('D',props.answers[3]) }}
+                style={(props.options.D.clicked) ? styles : {}}
+            >{props.answers[3]}</button>
 
         </div>
     )

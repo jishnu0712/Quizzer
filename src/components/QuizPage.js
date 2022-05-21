@@ -34,25 +34,27 @@ export default function QuizPage() {
                 throw (new Error("err"))
             })
             .then(//save to state 
-                data => setQuestions(data)
+
+                data => {
+                    //arrenge question ans and selected option
+                    setQuestions(data)
+                    console.log(data)
+                }
             )
             .catch(err => console.log(err))
-    },[])
+    }, [])
+
     if (questions.length > 0) {
-         FilledQuizz = questions.map(ele => (<Quizz
+        FilledQuizz = questions.map(ele => (<Quizz
             question={ele.question}
             handleClick={handleClick}
             options={options}
+            answers={[...ele.incorrect_answers, ele.correct_answer]}
         />))
     }
 
     return (
         <div className="quizz-page">
-            {/* <Quizz
-                question={question}
-                handleClick={handleClick}
-                options={options}
-            /> */}
             {FilledQuizz}
         </div>
     );
