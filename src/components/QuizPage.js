@@ -10,37 +10,49 @@ let FilledQuizz = [];
 
 
 export default function QuizPage() {
-    const [userAnswers, setUserAnswers] = React.useState({});
+    const [userAnswers, setUserAnswers] = React.useState({ loader: false });
     const [questions, setQuestions] = React.useState([]);
 
     function handleOptionClick(questionID, ans) {
-
         setUserAnswers(prev => (
             {
                 ...prev,
                 [questionID]: ans,
                 checkAnswer: false,
+                loadNewQuestion: false
+
             }
         ));
     }
 
     function checkAnswer() {
-        let score = 0;
-        for (let i = 0; i < questions.length; i++) {
-            if (questions[i].id in userAnswers) {
-                if (questions[i].correct_answer === userAnswers[questions[i].id]) {
-                    score++;
+        if (!userAnswers.checkAnswer) {
+            let score = 0;
+            questions.forEach((question,index)=> {
+                if (question.id in userAnswers) {
+                    if (question.correct_answer === userAnswers[question.id]) {
+                        score++;
+                    }
                 }
-            }
+            });
+            setUserAnswers(prev => (
+                {
+                    ...prev,
+                    checkAnswer: !prev.checkAnswer,
+                }));
+            console.log(score);
         }
-        setUserAnswers(prev => (
-            {
-                ...prev, checkAnswer: !prev.checkAnswer
-            }));
-        console.log(score);
+        else {
+            setUserAnswers(prev => (
+                {
+                    ...prev,
+                    loadNewQuestion: !prev.loadNewQuestion,
+                }));
+        }
     }
 
     React.useEffect(() => {
+        setUserAnswers(prev => ({ ...prev, loader: true }))
         fetch(URL)
             .then((response) => response.json())
             .then(data => {
@@ -53,9 +65,12 @@ export default function QuizPage() {
                 //add id in question
                 return data.map(ele => ({ ...ele, id: nanoid() }))
             })
-            .then(data => setQuestions(data))
+            .then(data => {
+                setUserAnswers(prev => ({ ...prev, loader: false }))
+                setQuestions(data)
+            })
             .catch(err => console.log(err))
-    }, [])
+    }, [userAnswers.loadNewQuestion])
 
     if (questions.length > 0) {
         FilledQuizz = questions.map(ele => (<Quizz
@@ -72,11 +87,12 @@ export default function QuizPage() {
 
     return (
         <div className="quizz-page">
-            {FilledQuizz}
-            <button
+            {userAnswers.loader && <div className="loader"></div>}
+            {!userAnswers.loader && FilledQuizz}
+            {!userAnswers.loader && <button
                 className="start-quiz check-answers"
                 onClick={checkAnswer}
-            >Check Answers</button>
+            >{userAnswers.checkAnswer ? 'Play Again' : 'Check Answers'}</button>}
         </div>
     );
 }

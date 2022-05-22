@@ -13,43 +13,33 @@ export default function Quizz(props) {
         props.handleOptionClick(questionID, ans);
     }
 
+    const optionsArr = props.answers.map(ele => { //simplify
+        let styles = {};
+        const elementIsSelect = (ele === props.userAnswers[questionID]);
 
-    const optionsArr = props.answers.map(ele => {
-        if (ele === props.userAnswers[questionID]) {
-            if (props.userAnswers.checkAnswer) {
-                if (ele === props.correct_answer) {
-                    return (<Options
-                        optionText={ele}
-                        handleClick={handleClick}
-                        styles={correctOption}
-                    />)
-                } else {
-                    return (<Options
-                        optionText={ele}
-                        handleClick={handleClick}
-                        styles={incorrectOption}
-                    />)
-                }
-
+        if (elementIsSelect && props.userAnswers.checkAnswer) {
+            if (ele === props.correct_answer) {
+                styles = correctOption;
+            } else {
+                styles = incorrectOption;
             }
-            return (<Options
-                optionText={ele}
-                handleClick={handleClick}
-                styles={selectedOptionStyle}
-            />)
         }
-        else {
-            return (<Options
-                optionText={ele}
-                handleClick={handleClick}
-                styles={{}}
-            />)
+        else if (elementIsSelect) {
+            styles = selectedOptionStyle;
         }
+
+        return (<Options
+            key={ele}
+            optionText={ele}
+            handleClick={handleClick}
+            styles={styles}
+        />)
     })
+
 
     return (
         <div className="quizz">
-            <h2>{props.question}</h2>
+            <h2>{props.question.replace(/"/g, "&quot;")}</h2>
             {optionsArr}
         </div>
     )
