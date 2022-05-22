@@ -66,8 +66,8 @@ body {
 }
 /* loader */
 .loader {
-  border: 16px solid black;
-  border-top: 16px solid var(--dark);
+  border: 16px solid white;
+  border-top: 16px solid #3498db;
   border-radius: 50%;
   width: 120px;
   height: 120px;
