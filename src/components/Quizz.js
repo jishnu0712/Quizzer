@@ -1,6 +1,5 @@
 import React from "react";
 import Options from "./Options";
-import { nanoid } from "nanoid";
 
 const selectedOptionStyle = { backgroundColor: '#D6DBF5' }
 const correctOption = { backgroundColor: '#94D7A2' }

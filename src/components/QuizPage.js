@@ -10,7 +10,11 @@ let FilledQuizz = [];
 
 
 export default function QuizPage() {
-    const [userAnswers, setUserAnswers] = React.useState({ loader: false });
+    const [userAnswers, setUserAnswers] = React.useState(
+        {
+            loader: false,
+            loadNewQuestion: false
+        });
     const [questions, setQuestions] = React.useState([]);
 
     function handleOptionClick(questionID, ans) {
@@ -19,8 +23,6 @@ export default function QuizPage() {
                 ...prev,
                 [questionID]: ans,
                 checkAnswer: false,
-                loadNewQuestion: false
-
             }
         ));
     }
@@ -28,27 +30,17 @@ export default function QuizPage() {
     function checkAnswer() {
         if (!userAnswers.checkAnswer) {
             let score = 0;
-            questions.forEach((question,index)=> {
-                if (question.id in userAnswers) {
-                    if (question.correct_answer === userAnswers[question.id]) {
-                        score++;
-                    }
+            questions.forEach((question) => {
+                const correct = question.correct_answer === userAnswers[question.id];
+                if (question.id in userAnswers && correct) {
+                    score++;
                 }
             });
-            setUserAnswers(prev => (
-                {
-                    ...prev,
-                    checkAnswer: !prev.checkAnswer,
-                }));
+            setUserAnswers(prev => ({ ...prev, checkAnswer: !prev.checkAnswer }));
             console.log(score);
+            return
         }
-        else {
-            setUserAnswers(prev => (
-                {
-                    ...prev,
-                    loadNewQuestion: !prev.loadNewQuestion,
-                }));
-        }
+        setUserAnswers(prev => ({ ...prev, loadNewQuestion: !prev.loadNewQuestion, }));
     }
 
     React.useEffect(() => {
