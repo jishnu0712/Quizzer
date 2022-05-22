@@ -8,12 +8,12 @@ const URL =
 
 let FilledQuizz = [];
 
-
 export default function QuizPage() {
     const [userAnswers, setUserAnswers] = React.useState(
         {
+            checkAnswer: false,
             loader: false,
-            loadNewQuestion: false
+            loadNewQuestion: false,
         });
     const [questions, setQuestions] = React.useState([]);
 
@@ -40,7 +40,11 @@ export default function QuizPage() {
             console.log(score);
             return
         }
-        setUserAnswers(prev => ({ ...prev, loadNewQuestion: !prev.loadNewQuestion, }));
+        setUserAnswers(prev => ({
+            ...prev,
+            checkAnswer: false,
+            loadNewQuestion: !prev.loadNewQuestion,
+        }));
     }
 
     React.useEffect(() => {
@@ -59,22 +63,31 @@ export default function QuizPage() {
             })
             .then(data => {
                 setUserAnswers(prev => ({ ...prev, loader: false }))
-                setQuestions(data)
+
+                let modifiedQuestions = data.map(ele => {
+                    let answers = [...ele.incorrect_answers, ele.correct_answer];
+                    answers.sort(() => (Math.random() > 0.5) ? 1 : -1);
+                    ele['answers'] = answers;
+                    return ele;
+                })
+                setQuestions(modifiedQuestions)
             })
             .catch(err => console.log(err))
     }, [userAnswers.loadNewQuestion])
 
     if (questions.length > 0) {
-        FilledQuizz = questions.map(ele => (<Quizz
-            key={ele.id}
+        FilledQuizz = questions.map(ele => {
+            return (<Quizz
+                key={ele.id}
 
-            id={ele.id}
-            handleOptionClick={handleOptionClick}
-            question={ele.question}
-            userAnswers={userAnswers}
-            correct_answer={ele.correct_answer}
-            answers={[...ele.incorrect_answers, ele.correct_answer]}
-        />))
+                id={ele.id}
+                handleOptionClick={handleOptionClick}
+                question={ele.question}
+                userAnswers={userAnswers}
+                correct_answer={ele.correct_answer}
+                answers={ele.answers}
+            />)
+        })
     }
 
     return (

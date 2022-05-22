@@ -26,6 +26,11 @@ export default function Quizz(props) {
         else if (elementIsSelect) {
             styles = selectedOptionStyle;
         }
+        else if (props.userAnswers.checkAnswer) {
+            if (ele === props.correct_answer) {
+                styles = correctOption;
+            }
+        }
 
         return (<Options
             key={ele}
