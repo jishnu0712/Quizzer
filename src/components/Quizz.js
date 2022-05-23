@@ -1,5 +1,4 @@
 import React from "react";
-import Options from "./Options";
 import he from 'he';
 
 const selectedOptionStyle = { backgroundColor: '#D6DBF5' }
@@ -33,12 +32,14 @@ export default function Quizz(props) {
             }
         }
 
-        return (<Options
-            key={ele}
-            optionText={he.decode(ele)}
-            handleClick={handleClick}
-            styles={styles}
-        />)
+        return (<button
+            className="options"
+            onClick={() => {
+                handleClick(he.decode(ele))
+            }}
+            style={styles}
+        >{he.decode(ele)}
+        </button>)
     })
 
     return (

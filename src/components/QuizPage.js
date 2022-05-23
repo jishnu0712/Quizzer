@@ -2,19 +2,18 @@ import React from "react";
 import Quizz from "./Quizz";
 import { nanoid } from 'nanoid'
 
-
 const URL = `https://opentdb.com/api.php?amount=5&type=multiple`;
 
 let FilledQuizz = [];
 
 export default function QuizPage() {
+    const [questions, setQuestions] = React.useState([]);
     const [userAnswers, setUserAnswers] = React.useState(
         {
             checkAnswer: false,
             loader: false,
             loadNewQuestion: false,
         });
-    const [questions, setQuestions] = React.useState([]);
 
     function handleOptionClick(questionID, ans) {
         setUserAnswers(prev => (
@@ -22,8 +21,7 @@ export default function QuizPage() {
                 ...prev,
                 [questionID]: ans,
                 checkAnswer: false,
-            }
-        ));
+            }));
     }
 
     function checkAnswer() {
