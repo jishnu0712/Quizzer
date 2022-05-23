@@ -48,31 +48,30 @@ export default function QuizPage() {
     }
 
     React.useEffect(() => {
-        setUserAnswers(prev => ({ ...prev, loader: true }))
-        fetch(URL)
-            .then((response) => response.json())
-            .then(data => {
-                if (data.response_code === 0) {
-                    return (data.results);
+        setUserAnswers(prev => ({ ...prev, loader: true }));
+        try {
+            async function fetchData() {
+                const response = await fetch(URL);
+                const data = await response.json();
+                if (data.response_code !== 0) {
+                    throw (new Error("err"))
                 }
-                throw (new Error("err"))
-            })
-            .then(data => {
-                //add id in question
-                return data.map(ele => ({ ...ele, id: nanoid() }))
-            })
-            .then(data => {
-                setUserAnswers(prev => ({ ...prev, loader: false }))
+                const results = await data.results;
+                const mappedData = results.map(ele => ({ ...ele, id: nanoid() }));
 
-                let modifiedQuestions = data.map(ele => {
+                let modifiedQuestions = mappedData.map(ele => {
                     let answers = [...ele.incorrect_answers, ele.correct_answer];
                     answers.sort(() => (Math.random() > 0.5) ? 1 : -1);
                     ele['answers'] = answers;
                     return ele;
                 })
                 setQuestions(modifiedQuestions)
-            })
-            .catch(err => console.log(err))
+
+            }
+            fetchData();
+            setUserAnswers(prev => ({ ...prev, loader: false }))
+        }
+        catch (err) { console.log(err) }
     }, [userAnswers.loadNewQuestion])
 
     if (questions.length > 0) {
