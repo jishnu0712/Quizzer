@@ -1,4 +1,5 @@
 import React from "react";
+import Options from "./Options";
 import he from 'he';
 
 

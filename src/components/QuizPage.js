@@ -3,11 +3,12 @@ import Quizz from "./Quizz";
 import { nanoid } from 'nanoid'
 import Confetti from 'react-confetti'
 
+
 const URL = `https://opentdb.com/api.php?amount=5&type=multiple`;
 
 let FilledQuizz = [];
 
-export default function QuizPage(props) {
+export default function QuizPage() {
     const [questions, setQuestions] = React.useState([]);
     const [userAnswers, setUserAnswers] = React.useState(
         {
@@ -23,7 +24,8 @@ export default function QuizPage(props) {
                 ...prev,
                 [questionID]: ans,
                 checkAnswer: false,
-            }));
+            }
+        ));
     }
 
     function checkAnswer() {
@@ -36,7 +38,6 @@ export default function QuizPage(props) {
                 }
             });
             setUserAnswers(prev => ({ ...prev, score: score, checkAnswer: !prev.checkAnswer }));
-            props.showScore();
             console.log(score);
             return
         }

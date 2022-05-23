@@ -6,23 +6,18 @@ import QuizPage from './components/QuizPage';
 
 
 export default function App() {
-  const [gameStats, setGameStats] = React.useState({ gameStarted: false, shownAnswer: false });
+  const [gameStarted, setGameStarted] = React.useState(false);
 
   function handleClick() {
-    setGameStats(prev => ({ ...prev, gameStarted: !prev.gameStarted }));
+    setGameStarted(prev => !prev);
   }
-  function showScore() {
-    setGameStats(prev => ({ ...prev, shownAnswer: !prev.shownAnswer }))
-  }
+  
   return (
     <>
-      {!gameStats.gameStarted && <LandingPage
+      {!gameStarted && <LandingPage
         handleClick={handleClick} />}
-      {gameStats.shownAnswer && (<><h1>SCore here</h1><LandingPage
-        handleClick={handleClick} /></>)}
-      {gameStats.gameStarted && !gameStats.shownAnswer && <QuizPage
-        showScore={() => { showScore() }}
-      />}
+      
+      {gameStarted && <QuizPage />}
     </>
   );
 }
