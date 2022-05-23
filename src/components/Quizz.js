@@ -40,10 +40,17 @@ export default function Quizz(props) {
         />)
     })
 
+    function convert(string) {
+        return string.replace(/&#(?:x([\da-f]+)|(\d+));/ig, function (_, hex, dec) {
+            return String.fromCharCode(dec || +('0x' + hex))
+        })
+    }
+    let question = convert(props.question);
+    question = question.replaceAll("&quot;", '"');
 
     return (
         <div className="quizz">
-            <h2>{props.question.replace(/"/g, "&quot;")}</h2>
+            <h2>{question}</h2>
             {optionsArr}
         </div>
     )
