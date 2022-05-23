@@ -11,6 +11,5 @@ export default function Options(props) {
         >
             {props.optionText}
         </button>
-
     )
 }

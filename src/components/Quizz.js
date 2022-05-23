@@ -1,5 +1,6 @@
 import React from "react";
 import Options from "./Options";
+import he from 'he';
 
 const selectedOptionStyle = { backgroundColor: '#D6DBF5' }
 const correctOption = { backgroundColor: '#94D7A2' }
@@ -34,23 +35,15 @@ export default function Quizz(props) {
 
         return (<Options
             key={ele}
-            optionText={ele}
+            optionText={he.decode(ele)}
             handleClick={handleClick}
             styles={styles}
         />)
     })
 
-    function convert(string) {
-        return string.replace(/&#(?:x([\da-f]+)|(\d+));/ig, function (_, hex, dec) {
-            return String.fromCharCode(dec || +('0x' + hex))
-        })
-    }
-    let question = convert(props.question);
-    question = question.replaceAll("&quot;", '"');
-
     return (
         <div className="quizz">
-            <h2>{question}</h2>
+            <h2>{he.decode(props.question)}</h2>
             {optionsArr}
         </div>
     )

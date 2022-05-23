@@ -3,8 +3,7 @@ import Quizz from "./Quizz";
 import { nanoid } from 'nanoid'
 
 
-const URL =
-    `https://opentdb.com/api.php?amount=5&type=multiple`;
+const URL = `https://opentdb.com/api.php?amount=5&type=multiple`;
 
 let FilledQuizz = [];
 
