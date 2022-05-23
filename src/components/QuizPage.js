@@ -1,18 +1,20 @@
 import React from "react";
 import Quizz from "./Quizz";
 import { nanoid } from 'nanoid'
+import Confetti from 'react-confetti'
 
 const URL = `https://opentdb.com/api.php?amount=5&type=multiple`;
 
 let FilledQuizz = [];
 
-export default function QuizPage() {
+export default function QuizPage(props) {
     const [questions, setQuestions] = React.useState([]);
     const [userAnswers, setUserAnswers] = React.useState(
         {
             checkAnswer: false,
             loader: false,
             loadNewQuestion: false,
+            score: 0,
         });
 
     function handleOptionClick(questionID, ans) {
@@ -33,7 +35,8 @@ export default function QuizPage() {
                     score++;
                 }
             });
-            setUserAnswers(prev => ({ ...prev, checkAnswer: !prev.checkAnswer }));
+            setUserAnswers(prev => ({ ...prev, score: score, checkAnswer: !prev.checkAnswer }));
+            props.showScore();
             console.log(score);
             return
         }
@@ -89,6 +92,7 @@ export default function QuizPage() {
         <div className="quizz-page">
             {userAnswers.loader && <div className="loader"></div>}
             {!userAnswers.loader && FilledQuizz}
+            {userAnswers.checkAnswer && userAnswers.score>3 && <Confetti />}
             {!userAnswers.loader && <button
                 className="start-quiz check-answers"
                 onClick={checkAnswer}
