@@ -57,19 +57,18 @@ export default function QuizPage() {
                     throw (new Error("err"))
                 }
                 const results = await data.results;
-                const mappedData = results.map(ele => ({ ...ele, id: nanoid() }));
 
-                let modifiedQuestions = mappedData.map(ele => {
+                let modifiedQuestions = results.map(ele => {
+                    ele['id'] = nanoid();
                     let answers = [...ele.incorrect_answers, ele.correct_answer];
                     answers.sort(() => (Math.random() > 0.5) ? 1 : -1);
                     ele['answers'] = answers;
                     return ele;
                 })
-                setQuestions(modifiedQuestions)
-
+                setQuestions(modifiedQuestions);
+                setUserAnswers(prev => ({ ...prev, loader: false }));
             }
             fetchData();
-            setUserAnswers(prev => ({ ...prev, loader: false }))
         }
         catch (err) { console.log(err) }
     }, [userAnswers.loadNewQuestion])
