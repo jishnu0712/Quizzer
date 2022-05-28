@@ -4,7 +4,6 @@ import "./components/LandingPage"
 import LandingPage from './components/LandingPage';
 import QuizPage from './components/QuizPage';
 
-
 export default function App() {
   const [gameStarted, setGameStarted] = React.useState(false);
 

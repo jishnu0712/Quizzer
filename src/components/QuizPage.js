@@ -3,7 +3,6 @@ import Quizz from "./Quizz";
 import { nanoid } from 'nanoid'
 import Confetti from 'react-confetti'
 
-
 const URL = `https://opentdb.com/api.php?amount=5&type=multiple`;
 
 let FilledQuizz = [];
@@ -50,28 +49,26 @@ export default function QuizPage() {
 
     React.useEffect(() => {
         setUserAnswers(prev => ({ ...prev, loader: true }));
-        try {
-            async function fetchData() {
+        async function fetchQuestion() {
+            try {
                 const response = await fetch(URL);
-                const data = await response.json();
-                if (data.response_code !== 0) {
-                    throw (new Error("err"))
+                if (!response.ok) { //response.response_code !== 0
+                    throw Error('could not fetch question');
                 }
-                const results = await data.results;
-
-                let modifiedQuestions = results.map(ele => {
-                    ele['id'] = nanoid();
+                const data = await response.json();
+                let modifiedQuestions = data.results.map(ele => {
+                    ele['id'] = nanoid(); //insert id
                     let answers = [...ele.incorrect_answers, ele.correct_answer];
-                    answers.sort(() => (Math.random() > 0.5) ? 1 : -1);
+                    answers.sort(() => (Math.random() > 0.5) ? 1 : -1); //randomize answers
                     ele['answers'] = answers;
                     return ele;
                 })
                 setQuestions(modifiedQuestions);
                 setUserAnswers(prev => ({ ...prev, loader: false }));
             }
-            fetchData();
+            catch (err) { console.error(err.message); }
         }
-        catch (err) { console.log(err) }
+        fetchQuestion();
     }, [userAnswers.loadNewQuestion])
 
     if (questions.length > 0) {
@@ -93,7 +90,7 @@ export default function QuizPage() {
         <div className="quizz-page">
             {userAnswers.loader && <div className="loader"></div>}
             {!userAnswers.loader && FilledQuizz}
-            {userAnswers.checkAnswer && userAnswers.score>3 && <Confetti />}
+            {userAnswers.checkAnswer && userAnswers.score > 3 && <Confetti />}
             {!userAnswers.loader && <button
                 className="start-quiz check-answers"
                 onClick={checkAnswer}
