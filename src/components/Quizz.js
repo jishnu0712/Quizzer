@@ -1,13 +1,11 @@
 import React from "react";
 import he from 'he';
 
-
 const selectedOptionStyle = { backgroundColor: '#D6DBF5' }
 const correctOption = { backgroundColor: '#94D7A2' }
 const incorrectOption = { backgroundColor: '#F8BCBC' }
 
 export default function Quizz(props) {
-    
     const questionID = props.id;
 
     function handleClick(ans) {
@@ -33,15 +31,13 @@ export default function Quizz(props) {
                 styles = correctOption;
             }
         }
-
+        const answer = he.decode(ele);
         return (
             <button
                 className="options"
-                onClick={() => {
-                    handleClick(he.decode(ele))
-                }}
+                onClick={() => handleClick(answer)}
                 style={styles}
-            >{he.decode(ele)}
+            >{answer}
             </button>)
     })
 
